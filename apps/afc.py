@@ -107,7 +107,7 @@ def main():
 
     # WebSocket setup
     state = dict(msg=None, time=None)
-    websocket_uri = "ws://localhost:9000"
+    websocket_uri = "ws://192.168.1.101:9000"
     websocket_handler = WebSocketHandler(
         websocket_uri, lambda msg: on_message(msg, state)
     )
@@ -156,8 +156,10 @@ def main():
                         if p2_info is not None:
                             p2_max_score = p2_info['max_ex_score']
 
-                    p1_score = msg['score']['p1_score']
-                    p2_score = msg['score']['p2_score']
+                    score = msg.get('score', None)
+                    if score is not None:
+                        p1_score = score.get('p1_score', None)
+                        p2_score = score.get('p2_score', None)
 
                     if p1_score is not None and p2_score is not None:
                         p1_score = max(0, p1_score)
